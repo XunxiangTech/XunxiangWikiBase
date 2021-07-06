@@ -2,7 +2,7 @@ server:
   port: 8880
 
 welcome:
-  hello: Welcome to SpringBoot for Wiki
+  hello: Welcome to SpringBoot for Xunxiang Wiki
 
 ##Data Source Config
 #spring:
