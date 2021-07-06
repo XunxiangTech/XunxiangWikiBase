@@ -1,0 +1,17 @@
+server:
+  port: 8880
+
+welcome:
+  hello: Welcome to SpringBoot for Wiki
+
+##Data Source Config
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    password: wiki
+#    url: jdbc:mysql://wiki@localhost/wiki?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+#    username: wiki
+#
+##Mybatis scan all mapper.xml
+#mybatis:
+#  mapper-locations: classpath:/mapper/**/*.xml
