@@ -4,14 +4,14 @@ server:
 welcome:
   hello: Welcome to SpringBoot for Xunxiang Wiki
 
-##Data Source Config
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    password: wiki
-#    url: jdbc:mysql://wiki@localhost/wiki?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-#    username: wiki
-#
-##Mybatis scan all mapper.xml
-#mybatis:
-#  mapper-locations: classpath:/mapper/**/*.xml
+#Data Source Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: xunxiangwiki
+    url: jdbc:mysql://xunxiangwiki@localhost/xunxiangwiki?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: xunxiangwiki
+
+#Mybatis scan all mapper.xml
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
