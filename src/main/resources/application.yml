@@ -9,7 +9,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: xunxiangwiki
-    url: jdbc:mysql://xunxiangwiki@localhost/xunxiangwiki?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://xunxiangwiki@192.168.1.109/xunxiangwiki?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: xunxiangwiki
 
 #Mybatis scan all mapper.xml
