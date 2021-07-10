@@ -1,6 +1,7 @@
 package com.xunxiang.xunxiangwikibase.service;
 
 
+import com.xunxiang.xunxiangwikibase.domain.Wikibook;
 import com.xunxiang.xunxiangwikibase.req.WikibookQueryReq;
 import com.xunxiang.xunxiangwikibase.req.WikibookSaveReq;
 import com.xunxiang.xunxiangwikibase.resp.PageResp;
@@ -14,6 +15,13 @@ import java.util.List;
 public interface WikibookService {
 
     /**
+     * Select the wikibook based on id
+     * @param id wikibook id
+     * @return the wikibook of this id
+     */
+    Wikibook select(Long id);
+
+    /**
      * Retrieve Correct wikibooks
      * @param wikiBookQueryReq requests param for retrieving
      * @return PageResp to include total count and pagination book list
@@ -25,5 +33,11 @@ public interface WikibookService {
      * @param wikibookSaveReq request param for editing
      */
     void save(WikibookSaveReq wikibookSaveReq) throws ParseException;
+
+    /**
+     * Delete wikibooks
+     * @param id wikibook id
+     */
+    void delete(Long id);
 
 }

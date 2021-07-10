@@ -33,6 +33,11 @@ public class WikibookServiceImpl implements WikibookService {
     SnowFlake snowFlake;
 
     @Override
+    public Wikibook select(Long id) {
+        return wikibookMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public PageResp<WikibookResp> list(WikibookQueryReq wikiBookQueryReq) {
 
         // Create example to search for
@@ -83,6 +88,11 @@ public class WikibookServiceImpl implements WikibookService {
             wikibook.setUpdateTime(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(dtf.format(now)));
             wikibookMapper.updateByPrimaryKeySelective(wikibook);
         }
+    }
+
+    @Override
+    public void delete(Long id) {
+        wikibookMapper.deleteByPrimaryKey(id);
     }
 
     public static void main(String[]args){

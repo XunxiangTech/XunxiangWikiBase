@@ -42,7 +42,15 @@ public class WikibookController {
          catch (ParseException e){
              e.printStackTrace();
          }
-         resp.setMessage(wikibookSaveReq.getTitle() + " Successfully Created/Updated");
+         resp.setMessage("【"+wikibookSaveReq.getTitle() + "】 Successfully Created/Updated");
          return resp;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public CommonResp delete(@PathVariable Long id){
+        CommonResp commonResp = new CommonResp();
+        commonResp.setMessage("Wikibook 【"+wikibookService.select(id).getTitle()+"】 Successfully deleted");
+        wikibookService.delete(id);
+        return commonResp;
     }
 }

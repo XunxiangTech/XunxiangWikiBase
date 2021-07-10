@@ -31,7 +31,7 @@ public class CategoryController {
     public CommonResp save(@Valid @RequestBody CategorySaveReq req){
         CommonResp commonResp = new CommonResp<>();
         categoryService.save(req);
-        commonResp.setMessage("Category "+req.getName()+" Successfully Edited!");
+        commonResp.setMessage("Category 【"+req.getName()+"】 Successfully Edited!");
         return commonResp;
     }
 
@@ -40,7 +40,7 @@ public class CategoryController {
         CommonResp commonResp = new CommonResp<>();
         String categoryName = categoryService.select(id).getName();
         categoryService.delete(id);
-        commonResp.setMessage("Category "+categoryName+" Successfully Deleted!");
+        commonResp.setMessage("Category 【"+categoryName+"】 Successfully Deleted!");
         return commonResp;
     }
 }
