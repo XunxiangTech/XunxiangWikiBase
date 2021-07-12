@@ -46,23 +46,39 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      寻向智库
+      <pre>
+        {{companyWiki}}
+        {{companyWiki2}}
+      </pre>
     </a-layout-content>
   </a-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref, reactive, toRef } from 'vue';
 import axios from 'axios';
 
 export default defineComponent({
   name: 'Home',
   setup() {
     console.log("setup");
-    axios.get("http://localhost:8880/wikibook/list").then((response) => {
-      console.log(response);
-    })
+    const companyWiki = ref();
+    const companyWiki1 = reactive({wikis: []});
 
+    onMounted(() => {
+      console.log("onMounted");
+      axios.get("http://localhost:8880/wikibook/list").then((response) => {
+        const data = response.data;
+        companyWiki.value = data.content;
+        companyWiki1.wikis = data.content;
+        console.log(response);
+      });
+    });
+
+    return {
+      companyWiki,
+      companyWiki2: toRef(companyWiki1, "wikis")
+    }
   }
 });
 </script>
