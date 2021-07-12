@@ -95,7 +95,7 @@ public class ShiroConfig{
     @ConfigurationProperties(prefix = "spring.redis")
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setDatabase(3);
+        redisManager.setDatabase(1);
         return redisManager;
     }
 
