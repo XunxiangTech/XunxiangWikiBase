@@ -46,6 +46,11 @@
         <!--<table tableName="doc"/>-->
         <!--<table tableName="content"/>-->
         <!--<table tableName="user"/>-->
-        <table tableName="wikibook"/>
+<!--        <table tableName="wikibook"/>-->
+<!--        <table tableName="user"/>-->
+<!--        <table tableName="role_user"/>-->
+        <table tableName="role"/>
+<!--        <table tableName="permission_role"/>-->
+<!--        <table tableName="permission"/>-->
     </context>
 </generatorConfiguration>

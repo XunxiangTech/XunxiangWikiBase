@@ -10,7 +10,7 @@ public class WelcomeController {
     @Value("${welcome.hello:TEST}") //优先读配置项，没有就读：后的默认值
     private String welcome;
 
-    @GetMapping("/")
+    @GetMapping({"/","/index"})
     public String welcome(){
         return welcome;
     }
