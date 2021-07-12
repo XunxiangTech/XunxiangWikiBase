@@ -36,8 +36,9 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        LOG.info("权限配置-->ShiroRealm.doGetAuthorizationInfo()");
+        LOG.info("权限配置-->ShiroRealm.doGetAuthorizationInfo() {}");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        LOG.info(principalCollection.getPrimaryPrincipal().toString());
         User user = CopyUtil.copy(principalCollection.getPrimaryPrincipal(),User.class);
         roleMapper.findRoleByUsername(user.getUsername()).stream().forEach(
                 role -> {
@@ -75,15 +76,15 @@ public class ShiroRealm extends AuthorizingRealm {
         return authenticationInfo;
     }
 
-//    /**
-//     * 通过用户名清除缓存
-//     */
-//    public void clearCache(String username) {
-//        System.out.println("调用cache清理操作");
-//        PrincipalCollection principals = new SimplePrincipalCollection(
-//                new UserPrivacy(username), getName());
-//        clearCache(principals);
-//    }
+    /**
+     * 通过用户名清除缓存
+     */
+    public void clearCache(String username) {
+        System.out.println("调用cache清理操作");
+        PrincipalCollection principals = new SimplePrincipalCollection(
+                username, getName());
+        clearCache(principals);
+    }
 
     @Override
     public void clearCache(PrincipalCollection principals) {
