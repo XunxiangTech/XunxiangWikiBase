@@ -10,6 +10,7 @@ import com.xunxiang.xunxiangwikibase.resp.WikibookResp;
 import com.xunxiang.xunxiangwikibase.service.WikibookService;
 import com.xunxiang.xunxiangwikibase.service.impl.CategoryServiceImpl;
 import com.xunxiang.xunxiangwikibase.service.impl.WikibookServiceImpl;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
