@@ -31,11 +31,11 @@ public class ShiroConfig {
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/logout", "logout");
-        filterChainDefinitionMap.put("/index", "user");
-        filterChainDefinitionMap.put("/", "user");
+//        filterChainDefinitionMap.put("/index", "user");
+//        filterChainDefinitionMap.put("/", "user");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/wikibook/**", "authc");
+//        filterChainDefinitionMap.put("/wikibook/**", "authc");
         //authc表示需要验证身份才能访问，还有一些比如anon表示不需要验证身份就能访问等。
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
