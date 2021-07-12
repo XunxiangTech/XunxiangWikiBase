@@ -37,13 +37,13 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         logger.info("SHIROFILTER authc拦截");
         HttpServletResponse res = (HttpServletResponse)response;
-        res.setHeader("Access-Control-Allow-Origin", "true");
+        res.setHeader("Access-Control-Allow-Origin", "*");
         res.setContentType("application/json; charset=utf-8");
         res.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = res.getWriter();
         Map<String, Object> map= new HashMap<>();
         map.put("status", 3);
-        map.put("msg", "未登录");
+        map.put("message", "未登录");
         writer.write(JSON.toJSONString(map));
         writer.close();
         //return false 拦截， true 放行
