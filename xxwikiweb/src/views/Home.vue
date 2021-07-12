@@ -47,13 +47,7 @@
       <a-layout-content class="content"
           :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
       >
-        <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="listData">
-          <template #footer>
-            <div>
-              <b>ant design vue</b>
-              footer part
-            </div>
-          </template>
+        <a-list item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3}" :pagination="pagination" :data-source="companyWiki">
           <template #renderItem="{ item }">
             <a-list-item key="item.title">
               <template #actions>
@@ -62,18 +56,11 @@
             {{ text }}
           </span>
               </template>
-              <template #extra>
-                <img
-                    width="272"
-                    alt="logo"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                />
-              </template>
               <a-list-item-meta :description="item.description">
                 <template #title>
                   <a :href="item.href">{{ item.title }}</a>
                 </template>
-                <template #avatar><a-avatar :src="item.avatar" /></template>
+                <template #avatar><a-avatar :src="item.icon" /></template>
               </a-list-item-meta>
               {{ item.content }}
             </a-list-item>
@@ -113,7 +100,7 @@ export default defineComponent({
       console.log("onMounted");
       axios.get("http://localhost:8880/wikibook/list").then((response) => {
         const data = response.data;
-        companyWiki.value = data.content;
+        companyWiki.value = data.content.list;
         companyWiki1.wikis = data.content;
         console.log(response);
       });
@@ -142,3 +129,13 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+  .ant-avatar {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 8%;
+    margin: 5px 0;
+  }
+</style>
