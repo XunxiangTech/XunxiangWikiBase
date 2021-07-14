@@ -92,17 +92,14 @@ for (let i = 0; i < 23; i++) {
 export default defineComponent({
   name: 'Home',
   setup() {
-    console.log("setup");
     const companyWiki = ref();
     const companyWiki1 = reactive({wikis: []});
 
     onMounted(() => {
-      console.log("onMounted2");
       axios.get("/wikibook/list").then((response) => {
         const data = response.data;
         companyWiki.value = data.content.list;
         companyWiki1.wikis = data.content;
-        console.log(response);
       });
     });
 
