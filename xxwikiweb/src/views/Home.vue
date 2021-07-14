@@ -97,8 +97,8 @@ export default defineComponent({
     const companyWiki1 = reactive({wikis: []});
 
     onMounted(() => {
-      console.log("onMounted");
-      axios.get("http://localhost:8880/wikibook/list").then((response) => {
+      console.log("onMounted2");
+      axios.get("/wikibook/list").then((response) => {
         const data = response.data;
         companyWiki.value = data.content.list;
         companyWiki1.wikis = data.content;
