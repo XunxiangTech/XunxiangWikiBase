@@ -13,6 +13,7 @@ import com.xunxiang.xunxiangwikibase.service.impl.WikibookServiceImpl;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -46,6 +47,15 @@ public class WikibookController {
          }
          resp.setMessage("【"+wikibookSaveReq.getTitle() + "】 Successfully Created/Updated");
          return resp;
+    }
+
+    @PostMapping("/upload-avatar")
+    public CommonResp uploadAvatar(@RequestParam("file")MultipartFile avatar){
+        CommonResp resp = new CommonResp();
+        wikibookService.uploadAvatar(avatar);
+        resp.setMessage("Upload Success to Project Directory");
+        resp.setContent(avatar.getOriginalFilename());
+        return resp;
     }
 
     @DeleteMapping("/delete/{id}")

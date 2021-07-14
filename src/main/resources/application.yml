@@ -4,6 +4,9 @@ server:
 welcome:
   hello: Welcome to SpringBoot for Xunxiang Wiki
 
+wiki:
+  avatar: xxwikiweb/public/images/
+
 #Data Source Config
 spring:
   datasource:

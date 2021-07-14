@@ -12,10 +12,16 @@ import com.xunxiang.xunxiangwikibase.resp.WikibookResp;
 import com.xunxiang.xunxiangwikibase.service.WikibookService;
 import com.xunxiang.xunxiangwikibase.util.CopyUtil;
 import com.xunxiang.xunxiangwikibase.util.SnowFlake;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -31,6 +37,9 @@ public class WikibookServiceImpl implements WikibookService {
 
     @Resource
     SnowFlake snowFlake;
+
+    @Value("${wiki.avatar:xxwikiweb/public/images/}")
+    private String avatarPath;
 
     @Override
     public Wikibook select(Long id) {
@@ -89,6 +98,18 @@ public class WikibookServiceImpl implements WikibookService {
             wikibookMapper.updateByPrimaryKeySelective(wikibook);
         }
     }
+
+    @Override
+    public void uploadAvatar(MultipartFile file) {
+        Path path = Paths.get(avatarPath+file.getOriginalFilename());
+        try {
+            Files.write(path, file.getBytes());
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void delete(Long id) {

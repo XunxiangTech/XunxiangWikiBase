@@ -7,6 +7,7 @@ import com.xunxiang.xunxiangwikibase.req.WikibookSaveReq;
 import com.xunxiang.xunxiangwikibase.resp.PageResp;
 import com.xunxiang.xunxiangwikibase.resp.WikibookResp;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -33,6 +34,12 @@ public interface WikibookService {
      * @param wikibookSaveReq request param for editing
      */
     void save(WikibookSaveReq wikibookSaveReq) throws ParseException;
+
+    /**
+     * Upload Avatar for Wikibook
+     * @param file the Multipart file(Image) from frontend
+     */
+    void uploadAvatar(MultipartFile file);
 
     /**
      * Delete wikibooks
