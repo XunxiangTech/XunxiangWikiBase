@@ -18,11 +18,13 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Override
     public User findByUsername(String username) {
@@ -60,10 +65,12 @@ public class UserServiceImpl implements UserService {
 
         try {
             subject.login(token);
-            jsonObject.put("token", subject.getSession().getId());
+            //jsonObject.put("token", subject.getSession().getId());
             jsonObject.put("msg", "登录成功");
             loginResp = CopyUtil.copy(user,UserLoginResp.class);
+            loginResp.setToken(subject.getSession().getId().toString());
             jsonObject.put("用户信息",loginResp);
+            //redisTemplate.opsForValue().set(token.toString(),loginResp,3600, TimeUnit.SECONDS);
         } catch (IncorrectCredentialsException e) {
             jsonObject.put("msg", "密码错误");
         } catch (LockedAccountException e) {
@@ -74,26 +81,5 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return jsonObject;
-//        User user = findByUsername(userLoginReq.getUsername());
-//        if(ObjectUtils.isEmpty(user)){
-//            LOG.info("User Not Exists, {}",userLoginReq.getUsername());
-//            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
-//        }
-//        if(!user.getState()){
-//            LOG.info("User Locked, {}",userLoginReq.getUsername());
-//            throw new BusinessException(BusinessExceptionCode.USER_LOCKED);
-//        }
-//        else{
-//            if(user.getPassword().equals(userLoginReq.getPassword())){
-//                // Login Success
-//                UserLoginResp loginResp = CopyUtil.copy(user,UserLoginResp.class);
-//                return loginResp;
-//            }
-//            else{
-//                LOG.info("Password Incorrect, {}",userLoginReq.getUsername());
-//                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
-//                // Password Incorrect
-//            }
-//        }
         }
 }
