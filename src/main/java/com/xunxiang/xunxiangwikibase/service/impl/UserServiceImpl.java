@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object login(UserLoginReq userLoginReq) {
 
-        User user = findByUsername(userLoginReq.getUsername());
+        //User user = findByUsername(userLoginReq.getUsername());
         JSONObject jsonObject = new JSONObject();
         UserLoginResp loginResp = new UserLoginResp();
         Subject subject = SecurityUtils.getSubject();
@@ -63,23 +63,24 @@ public class UserServiceImpl implements UserService {
 
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
 
-        try {
-            subject.login(token);
+//        try {
+        subject.login(token);
             //jsonObject.put("token", subject.getSession().getId());
-            jsonObject.put("msg", "登录成功");
-            loginResp = CopyUtil.copy(user,UserLoginResp.class);
-            loginResp.setToken(subject.getSession().getId().toString());
-            jsonObject.put("用户信息",loginResp);
+        jsonObject.put("msg", "登录成功");
+        User user = findByUsername(username);
+        loginResp = CopyUtil.copy(user,UserLoginResp.class);
+        loginResp.setToken(subject.getSession().getId().toString());
+        jsonObject.put("UserInfo",loginResp);
             //redisTemplate.opsForValue().set(token.toString(),loginResp,3600, TimeUnit.SECONDS);
-        } catch (IncorrectCredentialsException e) {
-            jsonObject.put("msg", "密码错误");
-        } catch (LockedAccountException e) {
-            jsonObject.put("msg", "登录失败，该用户已被冻结");
-        } catch (AuthenticationException e) {
-            jsonObject.put("msg", "该用户不存在");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (IncorrectCredentialsException e) {
+//            jsonObject.put("msg", "密码错误");
+//        } catch (LockedAccountException e) {
+//            jsonObject.put("msg", "登录失败，该用户已被冻结");
+//        } catch (AuthenticationException e) {
+//            jsonObject.put("msg", "该用户不存在");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return jsonObject;
         }
 }
