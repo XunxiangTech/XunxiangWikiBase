@@ -188,4 +188,9 @@
         LEFT JOIN role ON role_user.role_id = role.id
         WHERE username=#{username}
   </select>
+
+  <select id="selectAll" resultType="com.xunxiang.xunxiangwikibase.domain.Role">
+    SELECT *
+    FROM role
+  </select>
 </mapper>

@@ -223,4 +223,8 @@
       `state` = #{state,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="listAll" resultType="com.xunxiang.xunxiangwikibase.domain.User">
+    select id,username
+    from user
+  </select>
 </mapper>

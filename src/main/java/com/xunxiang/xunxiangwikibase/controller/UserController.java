@@ -6,6 +6,7 @@ import com.xunxiang.xunxiangwikibase.domain.Role;
 import com.xunxiang.xunxiangwikibase.domain.User;
 import com.xunxiang.xunxiangwikibase.mapper.PermissionMapper;
 import com.xunxiang.xunxiangwikibase.req.UserLoginReq;
+import com.xunxiang.xunxiangwikibase.req.UserRegisterReq;
 import com.xunxiang.xunxiangwikibase.resp.CommonResp;
 import com.xunxiang.xunxiangwikibase.resp.UserLoginResp;
 import com.xunxiang.xunxiangwikibase.service.PermissionService;
@@ -74,6 +75,11 @@ public class UserController {
         return resp;
     }
 
+
+    @PostMapping("/register")
+    public CommonResp register(@Valid @RequestBody UserRegisterReq req){
+        return null;
+    }
     @PostMapping("/login")
     public CommonResp login(@Valid @RequestBody UserLoginReq req){
         //req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
