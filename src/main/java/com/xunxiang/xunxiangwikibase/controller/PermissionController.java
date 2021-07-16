@@ -2,16 +2,11 @@ package com.xunxiang.xunxiangwikibase.controller;
 
 
 import com.xunxiang.xunxiangwikibase.domain.Role;
-import com.xunxiang.xunxiangwikibase.mapper.PermissionMapper;
-import com.xunxiang.xunxiangwikibase.mapper.RoleMapper;
-import com.xunxiang.xunxiangwikibase.mapper.UserMapper;
+import com.xunxiang.xunxiangwikibase.req.UserPermissionReq;
 import com.xunxiang.xunxiangwikibase.resp.CommonResp;
 import com.xunxiang.xunxiangwikibase.resp.UserPermissionResp;
 import com.xunxiang.xunxiangwikibase.service.impl.PermissionServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -38,6 +33,14 @@ public class PermissionController {
         List<UserPermissionResp> resps = permissionService.listAllUserPermission();
         resp.setMessage("List All User--Role--Permission Success");
         resp.setContent(resps);
+        return resp;
+    }
+
+    @PostMapping("save")
+    public CommonResp save(@RequestBody UserPermissionReq req){
+        CommonResp resp = new CommonResp();
+        permissionService.save(req);
+        resp.setMessage("Role Reset for User "+req.getUsername()+" Success");
         return resp;
     }
 }

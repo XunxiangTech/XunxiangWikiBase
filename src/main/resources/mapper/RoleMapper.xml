@@ -181,7 +181,9 @@
 
   <select id="findRoleByUsername" resultType="com.xunxiang.xunxiangwikibase.domain.Role">
         SELECT
-            *
+            role.id,
+			role.role,
+			role.description
         FROM
             user
         RIGHT JOIN role_user ON user.id = role_user.user_id

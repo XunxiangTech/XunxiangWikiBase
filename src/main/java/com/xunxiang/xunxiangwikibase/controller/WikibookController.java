@@ -27,7 +27,7 @@ public class WikibookController {
     @Autowired
     WikibookServiceImpl wikibookService;
 
-//    @RequiresPermissions("userInfo:add")
+    //@RequiresPermissions("docInfo:edit")
     @GetMapping("/list")
     public CommonResp list(@Valid WikibookQueryReq wikibookQueryReq){
         CommonResp<PageResp<WikibookResp>> commonResp = new CommonResp<>();
