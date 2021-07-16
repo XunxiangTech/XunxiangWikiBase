@@ -79,6 +79,9 @@ public class WikibookServiceImpl implements WikibookService {
 
     @Override
     public void save(WikibookSaveReq wikibookSaveReq) throws ParseException {
+        String iconPath = "/images/"+wikibookSaveReq.getIcon();
+        wikibookSaveReq.setIcon(iconPath);
+
         Wikibook wikibook = CopyUtil.copy(wikibookSaveReq,Wikibook.class);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
