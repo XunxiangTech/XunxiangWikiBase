@@ -85,6 +85,7 @@ public class UserController {
         //req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp<Object> resp = new CommonResp<>();
         Object loginResp = userService.login(req);
+        resp.setMessage("登录成功");
         //Long token =snowFlake.nextId();
         //LOG.info("生成单点登录token：{}，并放入redis中", token);
 //        loginResp.setToken(token.toString());

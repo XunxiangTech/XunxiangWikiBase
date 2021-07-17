@@ -1,6 +1,7 @@
 package com.xunxiang.xunxiangwikibase.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.xunxiang.xunxiangwikibase.resp.CommonResp;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +36,17 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        logger.info("SHIROFILTER authc拦截");
+        logger.error("SHIROFILTER authc拦截");
         HttpServletResponse res = (HttpServletResponse)response;
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setContentType("application/json; charset=utf-8");
         res.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = res.getWriter();
-        Map<String, Object> map= new HashMap<>();
-        map.put("status", 3);
-        map.put("message", "未登录");
-        writer.write(JSON.toJSONString(map));
+        CommonResp resp = new CommonResp();
+        resp.setStatus(401);
+        resp.setSuccess(false);
+        resp.setMessage("未登录");
+        writer.write(JSON.toJSONString(resp));
         writer.close();
         //return false 拦截， true 放行
         return false;

@@ -8,6 +8,11 @@ public class CommonResp<T> {
     private boolean success = true;
 
     /**
+     * 错误码
+     */
+    private int status =200;
+
+    /**
      * 返回信息
      */
     private String message;
@@ -41,13 +46,25 @@ public class CommonResp<T> {
         this.content = content;
     }
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("ResponseDto{");
-        sb.append("success=").append(success);
-        sb.append(", message='").append(message).append('\'');
-        sb.append(", content=").append(content);
-        sb.append('}');
-        return sb.toString();
+        return "CommonResp{" +
+                "success=" + success +
+                ", status=" + status +
+                ", message='" + message + '\'' +
+                ", content=" + content +
+                '}';
     }
 }

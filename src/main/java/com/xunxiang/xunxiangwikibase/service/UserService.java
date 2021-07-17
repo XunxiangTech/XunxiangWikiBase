@@ -14,5 +14,5 @@ public interface UserService {
      */
     User findByUsername(String username);
 
-    Object login(UserLoginReq userLoginReq);
+    UserLoginResp login(UserLoginReq userLoginReq);
 }

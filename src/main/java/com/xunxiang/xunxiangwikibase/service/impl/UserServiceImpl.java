@@ -46,15 +46,13 @@ public class UserServiceImpl implements UserService {
         if(!ObjectUtils.isEmpty(userList)){
             return userList.get(0);
         }
-        throw new NullPointerException("用户不存在");
+        throw new AuthenticationException("该用户不存在");
     }
 
     @Override
-    public Object login(UserLoginReq userLoginReq) {
+    public UserLoginResp login(UserLoginReq userLoginReq) {
 
-        //User user = findByUsername(userLoginReq.getUsername());
-        JSONObject jsonObject = new JSONObject();
-        UserLoginResp loginResp = new UserLoginResp();
+        //User user = findByUsername(userLoginReq.getUsername())
         Subject subject = SecurityUtils.getSubject();
         subject.getSession().getId();
 
@@ -63,15 +61,11 @@ public class UserServiceImpl implements UserService {
 
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
 
-//        try {
         subject.login(token);
-            //jsonObject.put("token", subject.getSession().getId());
-        jsonObject.put("msg", "登录成功");
         User user = findByUsername(username);
-        loginResp = CopyUtil.copy(user,UserLoginResp.class);
+        UserLoginResp loginResp = CopyUtil.copy(user,UserLoginResp.class);
         loginResp.setToken(subject.getSession().getId().toString());
-        jsonObject.put("UserInfo",loginResp);
-            //redisTemplate.opsForValue().set(token.toString(),loginResp,3600, TimeUnit.SECONDS);
+//        redisTemplate.opsForValue().set(token.toString(),loginResp,3600, TimeUnit.SECONDS);
 //        } catch (IncorrectCredentialsException e) {
 //            jsonObject.put("msg", "密码错误");
 //        } catch (LockedAccountException e) {
@@ -81,6 +75,6 @@ public class UserServiceImpl implements UserService {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        return jsonObject;
+        return loginResp;
         }
 }
