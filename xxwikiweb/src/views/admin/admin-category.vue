@@ -121,7 +121,6 @@
              * }]
              */
             const level1 = ref(); // 一级分类树，children属性就是二级分类
-            const category = ref({});
             /**
              * 数据查询
              **/
@@ -156,13 +155,51 @@
                 return result;
             };
 
+
+            const category = ref({});
             const modalVisible = ref(false);
+            const modalLoading = ref(false);
+            const handleModalOk = () => {
+                modalLoading.value=true;
+                axios.post("/category/save",category.value).then((response)=>{
+                    modalLoading.value=false;
+                    const data = response.data; //data = CommonResp
+                    if(data.success){
+                        modalVisible.value=false;
+
+                        // Restart List
+                        handleQuery();
+                    }
+                    else{
+                        message.error(data.message);
+                    }
+                });
+            };
             /**
              * 新增
              */
             const add = () => {
                 modalVisible.value = true;
                 category.value = {};
+            };
+
+            /**
+             * 编辑
+             */
+            const edit = (record: any) => {
+                modalVisible.value = true;
+                category.value=Tool.copy(record);
+                // categoryIds.value = [category.value.category1Id, category.value.category2Id]
+            };
+
+            const handleDelete = (id: number) => {
+                axios.delete("/category/delete/" + id).then((response) => {
+                    const data = response.data; // data = commonResp
+                    if (data.success) {
+                        // 重新加载列表
+                        handleQuery();
+                    }
+                });
             };
 
             onMounted(() => {
@@ -173,12 +210,16 @@
             return{
                 param,
                 handleQuery,
+                handleModalOk,
+                handleDelete,
                 columns,
                 level1,
                 loading,
                 getCategoryName,
                 add,
+                edit,
                 modalVisible,
+                modalLoading,
                 category
             }
         }

@@ -1,10 +1,11 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
+<!--    <div class="logo" />-->
+    <div class="logo"></div>
     <a-menu
         theme="dark"
         mode="horizontal"
-        :style="{ lineHeight: '64px' }"
+        :style="{ lineHeight: '64px'}"
     >
       <a-menu-item key="/">
         <router-link to="/">首页</router-link>
