@@ -10,7 +10,10 @@
         <router-link to="/">首页</router-link>
       </a-menu-item>
       <a-menu-item key="/admin/wiki">
-        <router-link to="/admin/wiki">Wiki管理</router-link>
+        <router-link to="/admin/wiki">百科书管理</router-link>
+      </a-menu-item>
+      <a-menu-item key="/admin/category">
+        <router-link to="/admin/category">分类管理</router-link>
       </a-menu-item>
       <a-menu-item key="/about">
         <router-link to="/about">关于我们</router-link>
