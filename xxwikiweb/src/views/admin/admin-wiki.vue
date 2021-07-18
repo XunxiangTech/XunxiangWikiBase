@@ -16,10 +16,10 @@
         </template>
         <template v-slot:action="{}">
           <a-space size="small">
-            <a-button type="primary">
+            <a-button type="primary" shape="round">
               编辑
             </a-button>
-            <a-button type="danger">
+            <a-button type="danger" shape="round">
               删除
             </a-button>
           </a-space>
@@ -76,7 +76,7 @@ export default defineComponent({
         dataIndex: 'voteCount'
       },
       {
-        title: 'Action',
+        title: '操作',
         key: 'action',
         slots: {customRender: 'action'}
       }

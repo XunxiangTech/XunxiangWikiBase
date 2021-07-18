@@ -19,7 +19,7 @@
                     :defaultExpandAllRows="true"
             >
                 <template v-slot:action="{ text, record }">
-                    <a-space size="small">
+                    <a-space size="middle">
                         <router-link :to="'/admin/doc?categoryId=' + record.id">
                             <a-button type="primary" shape="round">
                                 文档管理
