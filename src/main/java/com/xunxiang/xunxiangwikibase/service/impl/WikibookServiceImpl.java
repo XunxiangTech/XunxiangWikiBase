@@ -79,7 +79,7 @@ public class WikibookServiceImpl implements WikibookService {
 
     @Override
     public void save(WikibookSaveReq wikibookSaveReq) throws ParseException {
-        String iconPath = "/images/"+wikibookSaveReq.getIcon();
+        String iconPath = wikibookSaveReq.getIcon();
         wikibookSaveReq.setIcon(iconPath);
 
         Wikibook wikibook = CopyUtil.copy(wikibookSaveReq,Wikibook.class);
