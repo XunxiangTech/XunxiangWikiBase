@@ -19,7 +19,7 @@
             <a-button type="primary" shape="round">
               编辑
             </a-button>
-            <a-button type="danger" shape="round">
+            <a-button danger shape="round">
               删除
             </a-button>
           </a-space>
@@ -87,13 +87,19 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
-      axios.get("/wikibook/list", params).then((response) => {
+      axios.get("/wikibook/list", {
+        params: {
+          page: params.page,
+          size: params.size
+        }
+      }).then((response) => {
         loading.value = false;
         const data = response.data;
         wikiBooks.value = data.content.list;
 
         // 重置分页按钮
         pagination.value.current = params.page;
+        pagination.value.total = data.content.total;
       });
     };
 
@@ -109,7 +115,10 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleQuery({});
+      handleQuery({
+        page: 1,
+        size: pagination.value.pageSize
+      });
     });
 
     return {
