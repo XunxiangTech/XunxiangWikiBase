@@ -14,9 +14,9 @@
         <template #icon="{ text: icon }">
           <img v-if="icon" :src="icon" alt="icon"/>
         </template>
-        <template v-slot:action="{}">
+        <template v-slot:action="{text, record}">
           <a-space size="small">
-            <a-button type="primary" shape="round" @click="edit">
+            <a-button type="primary" shape="round" @click="edit(record)">
               编辑
             </a-button>
             <a-button danger shape="round">
@@ -34,7 +34,24 @@
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >
-    <p>test</p>
+    <a-form :model="wikibook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="封面">
+        <a-input v-model:value="wikibook.icon" />
+      </a-form-item>
+      <a-form-item label="名称">
+        <a-input v-model:value="wikibook.title" />
+      </a-form-item>
+      <a-form-item label="分类一">
+        <a-input v-model:value="wikibook.category1Id" />
+      </a-form-item>
+      <a-form-item label="分类二">
+        <a-input v-model:value="wikibook.category2Id" />
+      </a-form-item>
+      <a-form-item label="描述">
+        <a-input v-model:value="wikibook.description" type="textarea" />
+      </a-form-item>
+    </a-form>
+
   </a-modal>
 </template>
 
@@ -126,6 +143,7 @@ export default defineComponent({
     /**
      * 表单
      */
+    const wikibook = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const handleModalOk = () => {
@@ -139,8 +157,9 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = () => {
+    const edit = (record: any) => {
       modalVisible.value = true;
+      wikibook.value = record;
     }
 
     onMounted(() => {
@@ -159,6 +178,7 @@ export default defineComponent({
 
       edit,
 
+      wikibook,
       modalVisible,
       modalLoading,
       handleModalOk
