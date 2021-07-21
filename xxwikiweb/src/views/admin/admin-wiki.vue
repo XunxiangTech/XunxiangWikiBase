@@ -3,6 +3,9 @@
     <a-layout-content class="content"
                       :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
+      <p>
+        <a-button type="primary" @click="add" size="large">新增</a-button>
+      </p>
       <a-table
           :columns="columns"
           :row-key="record => record.id"
@@ -19,9 +22,16 @@
             <a-button type="primary" shape="round" @click="edit(record)">
               编辑
             </a-button>
-            <a-button danger shape="round">
-              删除
-            </a-button>
+            <a-popconfirm
+                title="删除后不可恢复，确认删除？"
+                ok-text="是"
+                cancel-text="否"
+                @confirm="handleDelete(record.id)"
+            >
+              <a-button danger shape="round">
+                删除
+              </a-button>
+            </a-popconfirm>
           </a-space>
         </template>
       </a-table>
@@ -170,6 +180,28 @@ export default defineComponent({
       modalVisible.value = true;
       wikibook.value = record;
     }
+    /**
+     * 新增
+     */
+    const add = () => {
+      modalVisible.value = true;
+      wikibook.value = {};
+    }
+    /**
+     * 删除
+     */
+    const handleDelete = (id: number) => {
+      axios.delete("/wikibook/delete/" + id).then((response) => {
+        const data = response.data; // data = commonResp
+        if (data.success) {
+          // 重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize
+          });
+        }
+      })
+    }
 
     onMounted(() => {
       handleQuery({
@@ -186,11 +218,14 @@ export default defineComponent({
       handleTableChange,
 
       edit,
+      add,
 
       wikibook,
       modalVisible,
       modalLoading,
-      handleModalOk
+      handleModalOk,
+
+      handleDelete
     }
   }
 });
