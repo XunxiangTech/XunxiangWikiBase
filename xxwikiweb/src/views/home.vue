@@ -133,17 +133,17 @@ export default defineComponent({
     const companyWiki1 = reactive({wikis: []});
 
     const level1 =  ref();
-    let categories: any;
+    let categorys: any;
 
     const handleQueryCategory = () => {
       axios.get("/category/all").then((response) => {
         const data = response.data;
         if (data.success) {
-          categories = data.content;
-          console.log("原始数组：", categories);
+          categorys = data.content;
+          console.log("原始数组：", categorys);
 
           level1.value = [];
-          level1.value = Tool.array2Tree(categories, 0);
+          level1.value = Tool.array2Tree(categorys, 0);
           console.log("树形结构：", level1.value);
 
         } else {
