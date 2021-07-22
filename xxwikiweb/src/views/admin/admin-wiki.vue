@@ -31,6 +31,9 @@
         <template #icon="{ text: icon }">
           <img v-if="icon" :src="icon" alt="icon"/>
         </template>
+        <template v-slot:category="{ text, record }">
+          <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
+        </template>
         <template v-slot:action="{text, record}">
           <a-space size="small">
             <a-button type="primary" shape="round" @click="edit(record)">
@@ -60,10 +63,10 @@
   >
     <a-form :model="wikibook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="封面">
-        <a-input v-model:value="wikibook.icon" />
+        <a-input v-model:value="wikibook.icon"/>
       </a-form-item>
       <a-form-item label="名称">
-        <a-input v-model:value="wikibook.title" />
+        <a-input v-model:value="wikibook.title"/>
       </a-form-item>
       <a-form-item label="分类">
         <a-cascader
@@ -73,7 +76,7 @@
         />
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="wikibook.description" type="textarea" />
+        <a-input v-model:value="wikibook.description" type="textarea"/>
       </a-form-item>
     </a-form>
 
@@ -83,8 +86,8 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
-import { message } from 'ant-design-vue';
-import { Tool } from '@/utils/tool';
+import {message} from 'ant-design-vue';
+import {Tool} from '@/utils/tool';
 
 export default defineComponent({
   name: 'AdminWiki',
@@ -110,13 +113,8 @@ export default defineComponent({
         dataIndex: 'title'
       },
       {
-        title: '分类一',
-        key: 'category1Id',
-        dataIndex: 'category1Id'
-      },
-      {
-        title: '分类二',
-        dataIndex: 'category2Id',
+        title: '分类',
+        slots: {customRender: 'category'},
       },
       {
         title: '文档数',
@@ -142,6 +140,9 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+      // UPDATE: 可能不需要
+      wikiBooks.value = [];
       axios.get("/wikibook/list", {
         params: {
           page: params.page,
@@ -177,7 +178,7 @@ export default defineComponent({
     /**
      * 表单
      */
-    // 数组 [100, 101]对应：前端开发 / Vue
+        // 数组 [100, 101]对应：前端开发 / Vue
     const categoryIds = ref();
     const wikibook = ref();
     const modalVisible = ref(false);
@@ -234,7 +235,7 @@ export default defineComponent({
       })
     }
 
-    const level1 =  ref();
+    const level1 = ref();
     let categorys: any;
     /**
      * 查询所有分类
@@ -263,6 +264,18 @@ export default defineComponent({
       });
     };
 
+    const getCategoryName = (cid: number) => {
+      // console.log(cid)
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid) {
+          // return item.name; // 注意，这里直接return不起作用
+          result = item.name;
+        }
+      });
+      return result;
+    };
+
     onMounted(() => {
       handleQueryCategory();
       handleQuery({
@@ -279,6 +292,7 @@ export default defineComponent({
       loading,
       handleTableChange,
       handleQuery,
+      getCategoryName,
 
       edit,
       add,
