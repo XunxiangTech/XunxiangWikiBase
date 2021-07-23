@@ -13,9 +13,14 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisPassword;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -23,6 +28,15 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig{
+
+    @Value("${redis.host}")
+    private String redisHost;
+
+    @Value("${redis.port}")
+    private int redisPort;
+
+    @Value("${redis.password}")
+    private String redisPassword;
     @Bean
     public ShiroFilterFactoryBean shirFilter(@Qualifier("securityManager") DefaultWebSecurityManager securityManager) {
         System.out.println("ShiroConfiguration.shirFilter()");
@@ -33,7 +47,7 @@ public class ShiroConfig{
         //配置退出过滤器，修改了默认logout过滤器，清除相应的缓存信息
         filterChainDefinitionMap.put("/logout", "logout");
         // 配置需要拦截的链接
-        filterChainDefinitionMap.put("/auth/**", "ShiroAuthFilter");
+        filterChainDefinitionMap.put("/wikibook/**", "ShiroAuthFilter");
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         // 自定义的登录过滤器
         filterMap.put("ShiroAuthFilter", new ShiroAuthFilter());
@@ -72,7 +86,7 @@ public class ShiroConfig{
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());
         // 自定义缓存实现 使用redis
-        securityManager.setCacheManager(cacheManager());
+        //securityManager.setCacheManager(cacheManager());
         securityManager.setRealm(shiroRealm());
 
         return securityManager;
@@ -92,18 +106,20 @@ public class ShiroConfig{
      * 配置shiro redisManager
      * @return
      */
-    @ConfigurationProperties(prefix = "spring.redis")
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setDatabase(1);
+        redisManager.setDatabase(0);
+        redisManager.setHost(redisHost);
+        redisManager.setPort(redisPort);
+        redisManager.setPassword(redisPassword);
         return redisManager;
     }
 
-    public RedisCacheManager cacheManager(){
-        RedisCacheManager cacheManager = new RedisCacheManager();
-        cacheManager.setRedisManager(redisManager());
-        return cacheManager;
-    }
+//    public RedisCacheManager cacheManager(){
+//        RedisCacheManager cacheManager = new RedisCacheManager();
+//        cacheManager.setRedisManager(redisManager());
+//        return cacheManager;
+//    }
 
     /**
      * 通过redis RedisSessionDAO shiro sessionDao层的实现

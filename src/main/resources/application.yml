@@ -15,9 +15,10 @@ spring:
     url: jdbc:mysql://xunxiangwiki@127.0.0.1/xunxiangwiki?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: xunxiangwiki
 
-  redis:
-    host: 127.0.0.1
-    port: 6379
+redis:
+  host: redis-14057.c1.asia-northeast1-1.gce.cloud.redislabs.com
+  port: 14057
+  password: yzhredis
 
 #Mybatis scan all mapper.xml
 mybatis:
