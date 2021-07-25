@@ -54,30 +54,6 @@
         </template>
       </a-list>
     </a-layout-content>
-
-    <!--      <a-layout-content class="content"-->
-    <!--          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"-->
-    <!--      >-->
-    <!--        <a-list item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3}" :pagination="pagination" :data-source="companyWiki">-->
-    <!--          <template #renderItem="{ item }">-->
-    <!--            <a-list-item key="item.title">-->
-    <!--              <template #actions>-->
-    <!--          <span v-for="{ type, text } in actions" :key="type">-->
-    <!--            <component v-bind:is="type" style="margin-right: 8px" />-->
-    <!--            {{ text }}-->
-    <!--          </span>-->
-    <!--              </template>-->
-    <!--              <a-list-item-meta :description="item.description">-->
-    <!--                <template #title>-->
-    <!--                  <a :href="item.href">{{ item.title }}</a>-->
-    <!--                </template>-->
-    <!--                <template #avatar><a-avatar :src="item.icon" /></template>-->
-    <!--              </a-list-item-meta>-->
-    <!--              {{ item.content }}-->
-    <!--            </a-list-item>-->
-    <!--          </template>-->
-    <!--        </a-list>-->
-    <!--      </a-layout-content>-->
   </a-layout>
 </template>
 
@@ -145,11 +121,6 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-      // axios.get("/wikibook/list").then((response) => {
-      //   const data = response.data;
-      //   companyWiki.value = data.content.list;
-      //   companyWiki1.wikis = data.content;
-      // });
     });
 
     const pagination = {
