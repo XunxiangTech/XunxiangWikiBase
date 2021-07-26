@@ -29,7 +29,6 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public CommonResp handler(MethodArgumentNotValidException e){
         CommonResp commonResp = new CommonResp();
@@ -42,7 +41,6 @@ public class GlobalExceptionHandler {
 
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = AuthenticationException.class)
     public CommonResp handler(AuthenticationException e){
         CommonResp commonResp = new CommonResp();
@@ -53,7 +51,6 @@ public class GlobalExceptionHandler {
         return commonResp;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IncorrectCredentialsException.class)
     public CommonResp handler(IncorrectCredentialsException e){
         CommonResp commonResp = new CommonResp();
@@ -64,7 +61,6 @@ public class GlobalExceptionHandler {
         return commonResp;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = LockedAccountException.class)
     public CommonResp handler(LockedAccountException e){
         CommonResp commonResp = new CommonResp();
@@ -75,7 +71,6 @@ public class GlobalExceptionHandler {
         return commonResp;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = Exception.class)
     public CommonResp handler(Exception e){
         CommonResp commonResp = new CommonResp();
@@ -86,7 +81,6 @@ public class GlobalExceptionHandler {
         return commonResp;
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(value = UnauthorizedException.class)//处理访问方法时权限不足问题
     public CommonResp handler(HttpServletResponse res, Exception e) throws IOException {
         LOG.error("Error in Authorization ------------"+e);
