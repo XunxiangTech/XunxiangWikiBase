@@ -1,14 +1,18 @@
 package com.xunxiang.xunxiangwikibase.req;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class WikidocSaveReq {
     private Long id;
 
+    @NotNull(message = "【所属电子书】不能为空")
     private Long wikibookId;
 
+    @NotNull(message = "【父文档】不能为空")
     private Long parent;
 
+    @NotNull(message = "【名称】不能为空")
     private String name;
 
     private Integer viewCount;
@@ -20,6 +24,9 @@ public class WikidocSaveReq {
     private Date updateTime;
 
     private Boolean checked;
+
+    @NotNull(message = "【内容】不能为空")
+    private String content;
 
     public Long getId() {
         return id;
@@ -93,22 +100,27 @@ public class WikidocSaveReq {
         this.checked = checked;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", wikibookId=").append(wikibookId);
-        sb.append(", parent=").append(parent);
-        sb.append(", name=").append(name);
-        sb.append(", viewCount=").append(viewCount);
-        sb.append(", voteCount=").append(voteCount);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", checked=").append(checked);
-        sb.append("]");
-        return sb.toString();
+        return "WikidocSaveReq{" +
+                "id=" + id +
+                ", wikibookId=" + wikibookId +
+                ", parent=" + parent +
+                ", name='" + name + '\'' +
+                ", viewCount=" + viewCount +
+                ", voteCount=" + voteCount +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", checked=" + checked +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

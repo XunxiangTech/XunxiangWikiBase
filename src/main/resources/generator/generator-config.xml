@@ -49,7 +49,7 @@
 <!--        <table tableName="wikibook"/>-->
 <!--        <table tableName="user"/>-->
 <!--        <table tableName="role_user"/>-->
-        <table tableName="wikidoc"/>
+        <table tableName="content"/>
 <!--        <table tableName="permission_role"/>-->
 <!--        <table tableName="permission"/>-->
     </context>
