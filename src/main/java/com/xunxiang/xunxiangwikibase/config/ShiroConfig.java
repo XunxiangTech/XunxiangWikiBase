@@ -8,7 +8,9 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -130,6 +132,27 @@ public class ShiroConfig{
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
         return redisSessionDAO;
+    }
+
+    //cookie对象;
+    @Bean
+    public SimpleCookie rememberMeCookie() {
+        System.out.println("ShiroConfiguration.rememberMeCookie()");
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+
+        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        simpleCookie.setMaxAge(60*30);
+        return simpleCookie;
+    }
+
+    //cookie管理对象;
+    @Bean
+    public CookieRememberMeManager cookieRememberMeManager() {
+        System.out.println("ShiroConfiguration.rememberMeManager()");
+        CookieRememberMeManager manager = new CookieRememberMeManager();
+        manager.setCookie(rememberMeCookie());
+        return manager;
     }
 
     /**
