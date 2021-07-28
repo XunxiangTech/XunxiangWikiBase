@@ -154,12 +154,16 @@ export default defineComponent({
     /**
      * 数据查询
      **/
-    const handleQuery = () => {
+    const handleQuery = (params:any) => {
       loading.value = true;
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
       level1.value = [];
       // + route.query.wikibookId
-      axios.get("wikidoc/list").then((response) => {
+      axios.get("wikidoc/list",{
+        params: {
+          wikibookId: route.query.wikibookId
+        }}
+        ).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -277,7 +281,9 @@ export default defineComponent({
           modalVisible.value = false;
 
           // Restart List
-          handleQuery();
+          handleQuery({
+            wikibookId:route.query.wikibookId
+          });
         } else {
           message.error(data.message);
         }
@@ -329,7 +335,9 @@ export default defineComponent({
             const data = response.data; // data = commonResp
             if (data.success) {
               // 重新加载列表
-              handleQuery();
+              handleQuery({
+                      wikibookId:route.query.wikibookId
+            });
             } else {
               message.error(data.message);
             }
@@ -339,7 +347,9 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleQuery();
+      handleQuery({
+        wikibookId:route.query.wikibookId
+      });
       const editor = new E('#content');
       editor.config.zIndex = 0;
       editor.create();

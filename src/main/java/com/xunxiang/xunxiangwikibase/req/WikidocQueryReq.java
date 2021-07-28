@@ -6,6 +6,8 @@ public class WikidocQueryReq extends PageReq {
 
     private Boolean checked;
 
+    private Long wikibookId;
+
     public String getName() {
         return name;
     }
@@ -22,11 +24,20 @@ public class WikidocQueryReq extends PageReq {
         this.checked = checked;
     }
 
+    public Long getWikibookId() {
+        return wikibookId;
+    }
+
+    public void setWikibookId(Long wikibookId) {
+        this.wikibookId = wikibookId;
+    }
+
     @Override
     public String toString() {
         return "WikidocQueryReq{" +
                 "name='" + name + '\'' +
                 ", checked=" + checked +
+                ", wikibookId=" + wikibookId +
                 '}';
     }
 }

@@ -55,6 +55,11 @@ public class WikidocServiceImpl implements WikidocService {
         WikidocExample wikidocExample = new WikidocExample();
         wikidocExample.setOrderByClause("update_time asc");
         WikidocExample.Criteria criteria = wikidocExample.createCriteria();
+
+        if(!ObjectUtils.isEmpty(wikiDocQueryReq.getWikibookId())) {
+            criteria.andWikibookIdEqualTo(wikiDocQueryReq.getWikibookId());
+        }
+
         if(!ObjectUtils.isEmpty(wikiDocQueryReq.getName())) {
             criteria.andNameLike("%"+wikiDocQueryReq.getName()+"%");
         }
@@ -129,6 +134,15 @@ public class WikidocServiceImpl implements WikidocService {
 
         criteria1.andIdIn(idsStr);
         contentMapper.deleteByExample(contentExample);
+    }
+
+    @Override
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if(!ObjectUtils.isEmpty(content)) {
+            return content.getContent();
+        }
+        return "";
     }
 
     public static void main(String[]args){

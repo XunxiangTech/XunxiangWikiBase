@@ -45,4 +45,10 @@ public interface WikidocService {
      */
     void delete(List<String> idstr);
 
+    /**
+     * Find content by Wikidoc id
+     * @param id
+     * @return
+     */
+    String findContent(Long id);
 }
