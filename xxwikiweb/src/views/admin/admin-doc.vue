@@ -124,6 +124,8 @@ export default defineComponent({
     const docs = ref();
     const loading = ref(false);
     // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
+    const treeSelectData = ref();
+    treeSelectData.value = [];
 
     const columns = [
       {
@@ -154,16 +156,16 @@ export default defineComponent({
     /**
      * 数据查询
      **/
-    const handleQuery = (params:any) => {
+    const handleQuery = (params: any) => {
       loading.value = true;
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
       level1.value = [];
-      // + route.query.wikibookId
-      axios.get("wikidoc/list",{
+      // TODO: + route.query.wikibookId
+      axios.get("/wikidoc/list", {
         params: {
           wikibookId: route.query.wikibookId
-        }}
-        ).then((response) => {
+        }
+      }).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -174,10 +176,10 @@ export default defineComponent({
           level1.value = Tool.array2Tree(docs.value, 0);
           console.log("树形结构：", level1);
 
-          // // 父文档下拉框初始化，相当于点击新增
-          // treeSelectData.value = Tool.copy(level1.value) || [];
-          // // 为选择树添加一个"无"
-          // treeSelectData.value.unshift({id: 0, name: '无'});
+          // 父文档下拉框初始化，相当于点击新增
+          treeSelectData.value = Tool.copy(level1.value) || [];
+          // 为选择树添加一个"无"
+          treeSelectData.value.unshift({id: 0, name: '无'});
         } else {
           message.error(data.message);
         }
@@ -265,24 +267,26 @@ export default defineComponent({
     /**
      * 表单
      **/
-        // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
-    const treeSelectData = ref();
-    treeSelectData.value = [];
-    const doc = ref({});
+    const doc = ref();
+    doc.value = {};
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+    // 编辑器实例对象
+    let editor: any = '';
 
     const handleSave = () => {
       modalLoading.value = true;
+      doc.value.content = editor.txt.html();
       axios.post("/wikidoc/save", doc.value).then((response) => {
         modalLoading.value = false;
         const data = response.data; //data = CommonResp
         if (data.success) {
-          modalVisible.value = false;
+          // modalVisible.value = false;
+          message.success("保存成功！");
 
           // Restart List
           handleQuery({
-            wikibookId:route.query.wikibookId
+            wikibookId: route.query.wikibookId
           });
         } else {
           message.error(data.message);
@@ -293,6 +297,8 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
+      // 清空富文本框
+      editor.txt.html("");
       modalVisible.value = true;
       doc.value = {
         wikibookId: route.query.wikibookId
@@ -305,11 +311,28 @@ export default defineComponent({
     };
 
     /**
+     * 内容查询
+     **/
+    const handleQueryContent = () => {
+      axios.get("/wikidoc/find-content/" + doc.value.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          editor.txt.html(data.content)
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
+
+    /**
      * 编辑
      */
     const edit = (record: any) => {
+      // 清空富文本框
+      editor.txt.html("");
       modalVisible.value = true;
       doc.value = Tool.copy(record);
+      handleQueryContent();
 
       // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
       treeSelectData.value = Tool.copy(level1.value);
@@ -336,8 +359,8 @@ export default defineComponent({
             if (data.success) {
               // 重新加载列表
               handleQuery({
-                      wikibookId:route.query.wikibookId
-            });
+                wikibookId: route.query.wikibookId
+              });
             } else {
               message.error(data.message);
             }
@@ -348,9 +371,10 @@ export default defineComponent({
 
     onMounted(() => {
       handleQuery({
-        wikibookId:route.query.wikibookId
+        wikibookId: route.query.wikibookId
       });
-      const editor = new E('#content');
+      editor = new E('#content');
+      // console.log(editor)
       editor.config.zIndex = 0;
       editor.create();
     });
