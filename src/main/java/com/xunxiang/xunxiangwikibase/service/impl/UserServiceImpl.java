@@ -38,6 +38,12 @@ public class UserServiceImpl implements UserService {
     private RedisTemplate redisTemplate;
 
     @Override
+    public List<User> listAllUser() {
+        List<User> userList = userMapper.listAll();
+        return userList;
+    }
+
+    @Override
     public User findByUsername(String username) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();

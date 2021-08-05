@@ -5,8 +5,11 @@ import com.xunxiang.xunxiangwikibase.req.UserLoginReq;
 import com.xunxiang.xunxiangwikibase.resp.UserLoginResp;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+
 public interface UserService {
 
+    List<User> listAllUser();
     /**
      * 通过username查找用户信息
      * @param username 用户名
@@ -14,5 +17,10 @@ public interface UserService {
      */
     User findByUsername(String username);
 
+    /**
+     * 登录用户
+     * @param userLoginReq
+     * @return
+     */
     UserLoginResp login(UserLoginReq userLoginReq);
 }

@@ -224,7 +224,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="listAll" resultType="com.xunxiang.xunxiangwikibase.domain.User">
-    select id,username
+    select *
     from user
   </select>
 </mapper>

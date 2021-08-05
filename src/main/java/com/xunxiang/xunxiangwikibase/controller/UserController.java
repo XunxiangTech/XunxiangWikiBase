@@ -51,6 +51,14 @@ public class UserController {
     @Resource
     SnowFlake snowFlake;
 
+    @GetMapping("/list-all")
+    public CommonResp listAllUser(){
+        CommonResp resp = new CommonResp();
+        List<User> userList = userService.listAllUser();
+        resp.setContent(userList);
+        return resp;
+    }
+
     @GetMapping("/find-user")
     public CommonResp findUser(String username){
         CommonResp resp = new CommonResp();
