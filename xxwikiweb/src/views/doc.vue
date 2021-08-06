@@ -89,7 +89,11 @@ export default defineComponent({
      **/
     const handleQuery = () => {
       // TODO: + route.query.ebookId
-      axios.get("/wikidoc/list/").then((response) => {
+      axios.get("/wikidoc/list", {
+        params: {
+          wikibookId: route.query.wikibookId
+        }
+      }).then((response) => {
         const data = response.data;
         if (data.success) {
           docs.value = data.content.list;
