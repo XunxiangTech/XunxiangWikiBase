@@ -7,9 +7,11 @@ import com.xunxiang.xunxiangwikibase.domain.User;
 import com.xunxiang.xunxiangwikibase.domain.UserExample;
 import com.xunxiang.xunxiangwikibase.mapper.UserMapper;
 import com.xunxiang.xunxiangwikibase.req.UserLoginReq;
+import com.xunxiang.xunxiangwikibase.req.UserRegisterReq;
 import com.xunxiang.xunxiangwikibase.resp.UserLoginResp;
 import com.xunxiang.xunxiangwikibase.service.UserService;
 import com.xunxiang.xunxiangwikibase.util.CopyUtil;
+import com.xunxiang.xunxiangwikibase.util.SnowFlake;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -36,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    @Resource
+    private SnowFlake snowFlake;
 
     @Override
     public List<User> listAllUser() {
@@ -83,4 +89,42 @@ public class UserServiceImpl implements UserService {
 //        }
         return loginResp;
         }
+
+    @Override
+    public void register(UserRegisterReq userRegisterReq) {
+        User user = CopyUtil.copy(userRegisterReq,User.class);
+        if(ObjectUtils.isEmpty(userRegisterReq.getId())){
+            if(ObjectUtils.isEmpty(selectByLoginName(userRegisterReq.getUsername()))){
+                //New User
+                user.setId(snowFlake.nextId());
+                user.setState(true);
+                userMapper.insert(user);
+            }
+            else{
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
+        }
+        else {
+            //Update
+            user.setUsername(null);
+            user.setPassword(null);
+            userMapper.updateByPrimaryKeySelective(user);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        userMapper.deleteByPrimaryKey(id);
+    }
+
+    private User selectByLoginName(String userName){
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUsernameEqualTo(userName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if(CollectionUtils.isEmpty(userList)){
+            return null;
+        }
+        return userList.get(0);
+    }
 }

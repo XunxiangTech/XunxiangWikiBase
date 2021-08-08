@@ -61,6 +61,16 @@ public class GlobalExceptionHandler {
         return commonResp;
     }
 
+    @ExceptionHandler(value = BusinessException.class)
+    public CommonResp handler(BusinessException e){
+        CommonResp commonResp = new CommonResp();
+        LOG.error("Error in Business ------------"+e);
+        commonResp.setMessage(e.getMessage());
+        commonResp.setSuccess(false);
+        commonResp.setStatus(400);
+        return commonResp;
+    }
+
     @ExceptionHandler(value = LockedAccountException.class)
     public CommonResp handler(LockedAccountException e){
         CommonResp commonResp = new CommonResp();

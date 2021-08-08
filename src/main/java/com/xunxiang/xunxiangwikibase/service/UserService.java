@@ -2,6 +2,7 @@ package com.xunxiang.xunxiangwikibase.service;
 
 import com.xunxiang.xunxiangwikibase.domain.User;
 import com.xunxiang.xunxiangwikibase.req.UserLoginReq;
+import com.xunxiang.xunxiangwikibase.req.UserRegisterReq;
 import com.xunxiang.xunxiangwikibase.resp.UserLoginResp;
 import org.springframework.util.ObjectUtils;
 
@@ -23,4 +24,17 @@ public interface UserService {
      * @return
      */
     UserLoginResp login(UserLoginReq userLoginReq);
+
+    /**
+     * Register User
+     * @param userRegisterReq
+     */
+    void register(UserRegisterReq userRegisterReq);
+
+    /**
+     * Delete User based on Id
+     * @param id
+     */
+    void delete(Long id);
+
 }

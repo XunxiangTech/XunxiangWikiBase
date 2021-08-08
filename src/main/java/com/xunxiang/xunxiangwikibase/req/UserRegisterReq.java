@@ -5,8 +5,13 @@ import javax.validation.constraints.Pattern;
 
 public class UserRegisterReq {
 
+    private Long id;
+
     @NotEmpty(message = "【用户名】不能为空")
     private String username;
+
+    @NotEmpty(message = "【昵称】不能为空")
+    private String name;
 
     @NotEmpty(message = "【邮箱】不能为空")
     private String email;
@@ -16,6 +21,29 @@ public class UserRegisterReq {
     @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,32}$", message = "【密码】6~20位")
     private String password;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;
@@ -35,8 +63,11 @@ public class UserRegisterReq {
 
     @Override
     public String toString() {
-        return "UserLoginReq{" +
-                "username='" + username + '\'' +
+        return "UserRegisterReq{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

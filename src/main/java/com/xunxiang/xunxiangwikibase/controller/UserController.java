@@ -86,8 +86,21 @@ public class UserController {
 
     @PostMapping("/register")
     public CommonResp register(@Valid @RequestBody UserRegisterReq req){
-        return null;
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp();
+        userService.register(req);
+        resp.setMessage("User "+req.getUsername()+" Successfully Created/Updated");
+        return resp;
     }
+
+    @DeleteMapping("/delete/{id}")
+    public CommonResp delete(@PathVariable Long id){
+        CommonResp resp = new CommonResp<>();
+        userService.delete(id);
+        resp.setMessage("Delete Success");
+        return resp;
+    }
+
     @PostMapping("/login")
     public CommonResp login(@Valid @RequestBody UserLoginReq req){
         //req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
