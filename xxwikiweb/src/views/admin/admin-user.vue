@@ -6,7 +6,7 @@
       <p>
         <a-form layout="inline" :model="param">
           <a-form-item>
-            <a-input v-model:value="param.loginName" placeholder="登陆名">
+            <a-input v-model:value="param.username" placeholder="用户名">
             </a-input>
           </a-form-item>
           <a-form-item>
@@ -60,8 +60,8 @@
     @ok="handleModalOk"
   >
     <a-form :model="user" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="登陆名">
-        <a-input v-model:value="user.loginName" :disabled="!!user.id"/>
+      <a-form-item label="用户名">
+        <a-input v-model:value="user.username" :disabled="!!user.id"/>
       </a-form-item>
       <a-form-item label="昵称">
         <a-input v-model:value="user.name" />
@@ -110,8 +110,8 @@
 
       const columns = [
         {
-          title: '登陆名',
-          dataIndex: 'loginName'
+          title: '用户名',
+          dataIndex: 'username'
         },
         {
           title: '名称',
@@ -139,7 +139,7 @@
           params: {
             page: params.page,
             size: params.size,
-            loginName: param.value.loginName
+            username: param.value.username,
           }
         }).then((response) => {
           loading.value = false;
