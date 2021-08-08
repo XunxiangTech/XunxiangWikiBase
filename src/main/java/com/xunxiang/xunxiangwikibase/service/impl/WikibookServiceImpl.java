@@ -79,7 +79,8 @@ public class WikibookServiceImpl implements WikibookService {
 
     @Override
     public void save(WikibookSaveReq wikibookSaveReq) throws ParseException {
-        String iconPath = wikibookSaveReq.getIcon();
+        String iconPath = "/images/"+wikibookSaveReq.getIcon();
+
         wikibookSaveReq.setIcon(iconPath);
 
         Wikibook wikibook = CopyUtil.copy(wikibookSaveReq,Wikibook.class);
@@ -116,6 +117,17 @@ public class WikibookServiceImpl implements WikibookService {
 
     @Override
     public void delete(Long id) {
+        Wikibook wikibook = wikibookMapper.selectByPrimaryKey(id);
+        if(!ObjectUtils.isEmpty(wikibook)){
+            String iconPath = wikibook.getIcon();
+            Path path = Paths.get(avatarPath+iconPath.split("/")[2]);
+            try {
+                Files.delete(path);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
         wikibookMapper.deleteByPrimaryKey(id);
     }
 

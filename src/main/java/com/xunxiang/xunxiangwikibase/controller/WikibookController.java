@@ -51,11 +51,17 @@ public class WikibookController {
     }
 
     @PostMapping("/upload-avatar")
-    public CommonResp uploadAvatar(@RequestParam("file")MultipartFile avatar){
+    public CommonResp uploadAvatar(@RequestParam("file") MultipartFile avatar){
         CommonResp resp = new CommonResp();
         wikibookService.uploadAvatar(avatar);
         resp.setMessage("Upload Success to Project Directory");
         resp.setContent(avatar.getOriginalFilename());
+        return resp;
+    }
+
+    @PostMapping("/ex")
+    public CommonResp ex(){
+        CommonResp resp = new CommonResp();
         return resp;
     }
 
