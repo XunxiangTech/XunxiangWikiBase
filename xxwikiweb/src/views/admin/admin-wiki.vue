@@ -67,8 +67,33 @@
       @ok="handleModalOk"
   >
     <a-form :model="wikibook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+<!--      <a-form-item label="封面">-->
+<!--        <a-input v-model:value="wikibook.icon"/>-->
+<!--      </a-form-item>-->
       <a-form-item label="封面">
-        <a-input v-model:value="wikibook.icon"/>
+        <a-space>
+          <a-upload
+                  v-model:file-list="fileList"
+                  name="avatar"
+                  list-type="picture-card"
+                  class="avatar-uploader"
+                  :show-upload-list="false"
+                  :before-upload="beforeUpload"
+                  action="http://127.0.0.1:8880/wikibook/ex"
+                  @change="handleChange"
+          >
+            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+            <div v-else>
+              <LoadingOutlined v-if="loading1"></LoadingOutlined>
+              <!--            <loading-outlined v-if="loading"></loading-outlined>-->
+              <PlusOutlined v-else></PlusOutlined>
+              <!--            <plus-outlined v-else></plus-outlined>-->
+              <div class="ant-upload-text">Upload</div>
+            </div>
+          </a-upload>
+          <a-button type="primary" ghost @click="saveImage(image)">确认上传该封面照片</a-button>
+        </a-space>
+
       </a-form-item>
       <a-form-item label="名称">
         <a-input v-model:value="wikibook.title"/>
@@ -93,9 +118,35 @@ import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
 import {Tool} from '@/utils/tool';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+
+interface FileItem {
+  uid: string;
+  name?: string;
+  status?: string;
+  response?: string;
+  url?: string;
+  type?: string;
+  size: number;
+  originFileObj: any;
+}
+
+interface FileInfo {
+  file: FileItem;
+  fileList: FileItem[];
+}
+function getBase64(img: Blob, callback: (base64Url: string) => void) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+}
 
 export default defineComponent({
   name: 'AdminWiki',
+  components: {
+    LoadingOutlined,
+    PlusOutlined,
+  },
   setup() {
     const param = ref();
     param.value = {};
@@ -139,6 +190,45 @@ export default defineComponent({
         slots: {customRender: 'action'}
       }
     ];
+
+    let file: any;
+
+    const fileList = ref([]);
+    const loading1 = ref<boolean>(false);
+    const imageUrl = ref<string>('');
+
+    const handleChange = (info: FileInfo) => {
+      if (info.file.status === 'uploading') {
+        loading1.value = true;
+        return;
+      }
+      if (info.file.status === 'done') {
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, (base64Url: string) => {
+          wikibook.value.icon = info.file.name;
+          imageUrl.value = base64Url;
+          loading1.value = false;
+        });
+        file = info.file.originFileObj;
+      }
+      if (info.file.status === 'error') {
+        loading1.value = false;
+        console.log(info.file.response)
+        message.error('upload error');
+      }
+    };
+
+    const beforeUpload = (file: FileItem) => {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        message.error('You can only upload JPG file!');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+      }
+      return isJpgOrPng && isLt2M;
+    };
 
     /**
      * 数据查询
@@ -269,6 +359,14 @@ export default defineComponent({
       });
     };
 
+    const saveImage = ()=>{
+      const formData = new FormData()
+      formData.append('file',file);
+      axios.post("wikibook/upload-avatar",formData).then((response)=>{
+        console.log("OK");
+      });
+    }
+
     const getCategoryName = (cid: number) => {
       // console.log(cid)
       let result = "";
@@ -291,6 +389,7 @@ export default defineComponent({
       pagination,
       columns,
       loading,
+      loading1,
       handleTableChange,
       handleQuery,
       getCategoryName,
@@ -304,8 +403,13 @@ export default defineComponent({
       handleModalOk,
       categoryIds,
       level1,
+      fileList,
+      imageUrl,
 
-      handleDelete
+      handleDelete,
+      handleChange,
+      beforeUpload,
+      saveImage
     }
   }
 });
@@ -315,5 +419,18 @@ export default defineComponent({
 img {
   width: 50px;
   height: 50px;
+}
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
 </style>
