@@ -1,10 +1,13 @@
 package com.xunxiang.xunxiangwikibase.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xunxiang.xunxiangwikibase.common.enums.RoleEnum;
 import com.xunxiang.xunxiangwikibase.common.exception.BusinessException;
 import com.xunxiang.xunxiangwikibase.common.exception.BusinessExceptionCode;
+import com.xunxiang.xunxiangwikibase.domain.RoleUser;
 import com.xunxiang.xunxiangwikibase.domain.User;
 import com.xunxiang.xunxiangwikibase.domain.UserExample;
+import com.xunxiang.xunxiangwikibase.mapper.RoleUserMapper;
 import com.xunxiang.xunxiangwikibase.mapper.UserMapper;
 import com.xunxiang.xunxiangwikibase.req.UserLoginReq;
 import com.xunxiang.xunxiangwikibase.req.UserRegisterReq;
@@ -36,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private RoleUserMapper roleUserMapper;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -96,9 +102,16 @@ public class UserServiceImpl implements UserService {
         if(ObjectUtils.isEmpty(userRegisterReq.getId())){
             if(ObjectUtils.isEmpty(selectByLoginName(userRegisterReq.getUsername()))){
                 //New User
-                user.setId(snowFlake.nextId());
+                Long userId = snowFlake.nextId();
+
+                user.setId(userId);
                 user.setState(true);
                 userMapper.insert(user);
+                RoleUser roleUser = new RoleUser();
+                roleUser.setUserId(userId);
+                roleUser.setRoleId(RoleEnum.VIEWER.getRoleId());
+                roleUser.setId(snowFlake.nextId());
+                roleUserMapper.insert(roleUser);
             }
             else{
                 throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
