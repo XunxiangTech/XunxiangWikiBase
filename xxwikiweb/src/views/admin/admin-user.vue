@@ -146,7 +146,6 @@
           const data = response.data;
           if (data.success) {
             users.value = data.content;
-            console.log(users.value)
 
             // 重置分页按钮
             pagination.value.current = params.page;
