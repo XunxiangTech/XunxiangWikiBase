@@ -86,7 +86,8 @@ public class UserController {
 
     @PostMapping("/register")
     public CommonResp register(@Valid @RequestBody UserRegisterReq req){
-        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        String password = DigestUtils.md5DigestAsHex(req.getPassword().getBytes());
+        req.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         CommonResp resp = new CommonResp();
         userService.register(req);
         resp.setMessage("User "+req.getUsername()+" Successfully Created/Updated");

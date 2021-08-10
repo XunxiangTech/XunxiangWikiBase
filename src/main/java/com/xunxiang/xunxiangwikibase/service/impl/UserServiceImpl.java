@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
 
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
 
+        System.out.println("LOGIN TOKEN: "+token);
         subject.login(token);
         User user = findByUsername(username);
         UserLoginResp loginResp = CopyUtil.copy(user,UserLoginResp.class);
