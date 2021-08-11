@@ -25,8 +25,11 @@
       <a-menu-item class="login-menu">
         <span v-show="user.id">您好：{{user.name}}</span>
       </a-menu-item>
-      <a-menu-item class="login-menu" v-show="!user.id" @click="showLoginModal">
-        登录
+      <a-menu-item class="login-menu" @click="showLoginModal">
+        <span v-show="!user.id">登录</span>
+      </a-menu-item>
+      <a-menu-item class="login-menu" @click="showRegisterModal">
+        <span v-show="!user.id">注册</span>
       </a-menu-item>
     </a-menu>
 
@@ -42,6 +45,28 @@
         </a-form-item>
         <a-form-item label="密码">
           <a-input v-model:value="loginUser.password" type="password"/>
+        </a-form-item>
+      </a-form>
+    </a-modal>
+
+    <a-modal
+        title="注册"
+        v-model:visible="registerModalVisible"
+        :confirm-loading="registerModalLoading"
+        @ok="register"
+    >
+      <a-form :model="registerUser" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+        <a-form-item label="用户名">
+          <a-input v-model:value="registerUser.username"/>
+        </a-form-item>
+        <a-form-item label="昵称">
+          <a-input v-model:value="registerUser.name"/>
+        </a-form-item>
+        <a-form-item label="邮箱">
+          <a-input v-model:value="registerUser.email"/>
+        </a-form-item>
+        <a-form-item label="密码">
+          <a-input v-model:value="registerUser.password" type="password"/>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -62,6 +87,38 @@ export default defineComponent({
   setup() {
     // 登录后保存
     const user = computed(() => store.state.user);
+
+    // 用来注册
+    const registerUser = ref({
+      username: "test888",
+      name: "测试用户888",
+      email: "test888@test.com",
+      password: "test123"
+    });
+    const registerModalVisible = ref(false);
+    const registerModalLoading = ref(false);
+    const showRegisterModal = () => {
+      registerModalVisible.value = true;
+    };
+
+    // 注册
+    const register = () => {
+      console.log("开始注册");
+      registerModalLoading.value = true;
+      registerUser.value.password = hexMd5(registerUser.value.password);
+      axios.post('/user/register', registerUser.value).then((response) => {
+        registerModalLoading.value = false;
+        const data = response.data;
+        if (data.success) {
+          registerModalVisible.value = false;
+          message.success("注册成功！");
+
+          store.commit("setUser", data.content);
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
 
     // 用来登录
     const loginUser = ref({
@@ -108,11 +165,18 @@ export default defineComponent({
     };
 
     return {
+      registerModalVisible,
+      registerModalLoading,
+      showRegisterModal,
+      registerUser,
+      register,
+
       loginModalVisible,
       loginModalLoading,
       showLoginModal,
       loginUser,
       login,
+
       user,
       logout
     }
