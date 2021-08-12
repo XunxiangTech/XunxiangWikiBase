@@ -1,6 +1,9 @@
 server:
   port: 8880
 
+host:
+  local: http://localhost:8080
+
 welcome:
   hello: Welcome to SpringBoot for Xunxiang Wiki
 

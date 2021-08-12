@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -94,19 +95,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = UnauthorizedException.class)//处理访问方法时权限不足问题
     public CommonResp handler(HttpServletResponse res, Exception e) throws IOException {
         LOG.error("Error in Authorization ------------"+e);
-//        res.setHeader("Access-Control-Allow-Credentials", "*");
-//        res.setContentType("application/json; charset=utf-8");
-//        res.setStatus(HttpServletResponse.SC_OK);
-//        PrintWriter writer = res.getWriter();
         CommonResp resp = new CommonResp();
         resp.setSuccess(false);
         resp.setMessage("权限不足");
         resp.setStatus(401);
-//        Map<String, Object> map= new HashMap<>();
-//        map.put("status", 3);
-//        map.put("message", "权限不足");
-//        writer.write(JSON.toJSONString(resp));
-//        writer.close();
+        return resp;
+    }
+
+    @ExceptionHandler(value = LoginException.class)//处理访问方法时未登录问题
+    public CommonResp handler(LoginException e) throws IOException {
+        LOG.error("Error in Login ------------"+e);
+        CommonResp resp = new CommonResp();
+        resp.setSuccess(false);
+        resp.setMessage("未登录");
+        resp.setStatus(401);
         return resp;
     }
 

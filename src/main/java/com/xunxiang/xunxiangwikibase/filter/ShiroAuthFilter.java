@@ -6,6 +6,7 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,8 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         logger.error("SHIROFILTER authc拦截");
         HttpServletResponse res = (HttpServletResponse)response;
-        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
         res.setContentType("application/json; charset=utf-8");
         res.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = res.getWriter();
