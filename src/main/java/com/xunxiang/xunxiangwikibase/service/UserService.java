@@ -26,6 +26,11 @@ public interface UserService {
     UserLoginResp login(UserLoginReq userLoginReq);
 
     /**
+     * 退出登录
+     */
+    void logout();
+
+    /**
      * Register User
      * @param userRegisterReq
      */

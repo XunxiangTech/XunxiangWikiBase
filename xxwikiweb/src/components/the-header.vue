@@ -126,7 +126,7 @@ export default defineComponent({
           registerModalVisible.value = false;
           message.success("注册成功！");
 
-          store.commit("setUser", data.content);
+          //store.commit("setUser", data.content);
         } else {
           message.error(data.message);
         }
@@ -166,7 +166,7 @@ export default defineComponent({
     // 退出登录
     const logout = () => {
       console.log("退出登录开始");
-      axios.get('/user/logout/' + user.value.token).then((response) => {
+      axios.get('user/logout').then((response) => {
         const data = response.data;
         if (data.success) {
           message.success("退出登录成功！");

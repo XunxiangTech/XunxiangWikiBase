@@ -98,6 +98,12 @@ public class UserServiceImpl implements UserService {
         }
 
     @Override
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+    }
+
+    @Override
     public void register(UserRegisterReq userRegisterReq) {
         User user = CopyUtil.copy(userRegisterReq,User.class);
         if(ObjectUtils.isEmpty(userRegisterReq.getId())){

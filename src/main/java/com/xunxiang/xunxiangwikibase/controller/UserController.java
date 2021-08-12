@@ -87,7 +87,7 @@ public class UserController {
     @PostMapping("/register")
     public CommonResp register(@Valid @RequestBody UserRegisterReq req){
         String password = DigestUtils.md5DigestAsHex(req.getPassword().getBytes());
-        req.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
+        req.setPassword(password);
         CommonResp resp = new CommonResp();
         userService.register(req);
         resp.setMessage("User "+req.getUsername()+" Successfully Created/Updated");
@@ -113,6 +113,14 @@ public class UserController {
 //        loginResp.setToken(token.toString());
         //redisTemplate.opsForValue().set(token,loginResp,3600*24, TimeUnit.SECONDS);
         resp.setContent(loginResp);
+        return resp;
+    }
+
+    @GetMapping("/logout")
+    public CommonResp logout(){
+        CommonResp resp = new CommonResp();
+        userService.logout();
+        resp.setMessage("退出登录成功");
         return resp;
     }
 }
