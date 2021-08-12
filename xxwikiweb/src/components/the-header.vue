@@ -9,41 +9,38 @@
       <a-menu-item key="/">
         <router-link to="/">首页</router-link>
       </a-menu-item>
-      <a-menu-item key="/admin/user">
-        <router-link to="/admin/user">用户管理</router-link>
-      </a-menu-item>
-      <a-menu-item key="/admin/wiki">
-        <router-link to="/admin/wiki">百科书管理</router-link>
-      </a-menu-item>
-      <a-menu-item key="/admin/category">
-        <router-link to="/admin/category">分类管理</router-link>
-      </a-menu-item>
       <a-menu-item key="/about">
         <router-link to="/about">关于我们</router-link>
       </a-menu-item>
-      <a-menu-item class="login-menu">
-        <span v-show="user.id">您好：{{user.name}}</span>
+      <a-menu-item key="/admin/user" :style="user.id ? {} : {display:'none'}">
+        <router-link to="/admin/user">用户管理</router-link>
       </a-menu-item>
-      <a-menu-item class="login-menu">
-        <span v-show="!user.id" @click="showLoginModal">登录</span>
+      <a-menu-item key="/admin/wiki" :style="user.id ? {} : {display:'none'}">
+        <router-link to="/admin/wiki">百科书管理</router-link>
       </a-menu-item>
-<!--      <a-menu-item class="login-menu" @click="logout">-->
-<!--        <span v-show="user.id">退出登录</span>-->
-<!--      </a-menu-item>-->
+      <a-menu-item key="/admin/category" :style="user.id ? {} : {display:'none'}">
+        <router-link to="/admin/category">分类管理</router-link>
+      </a-menu-item>
+      <a-menu-item class="login-menu" :style="user.id ? {} : {display:'none'}">
+        <span>您好：{{user.name}}</span>
+      </a-menu-item>
+      <a class="login-menu" v-show="!user.id" @click="showLoginModal" :style="{right: '10px'}">
+        <span>登录</span>
+      </a>
       <a-popconfirm
           title="确认退出登录?"
           ok-text="是"
           cancel-text="否"
           @confirm="logout()"
       >
-        <a-menu-item class="login-menu">
-          <span v-show="user.id">退出登录</span>
-        </a-menu-item>
+        <a class="login-menu" v-show="user.id" :style="{right: '10px'}">
+          <span>退出登录</span>
+        </a>
       </a-popconfirm>
 
-      <a-menu-item class="login-menu">
-        <span v-show="!user.id" @click="showRegisterModal">注册</span>
-      </a-menu-item>
+      <a class="login-menu" v-show="!user.id" @click="showRegisterModal" :style="{right: '45px'}">
+        <span>注册</span>
+      </a>
     </a-menu>
 
     <a-modal
@@ -211,6 +208,6 @@ export default defineComponent({
 .login-menu {
   color: white;
   background-color: transparent !important;
-  justify-content: right;
+  position: absolute;
 }
 </style>
