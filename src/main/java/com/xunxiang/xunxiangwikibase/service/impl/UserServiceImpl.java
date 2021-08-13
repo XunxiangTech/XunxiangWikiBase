@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xunxiang.xunxiangwikibase.common.enums.RoleEnum;
 import com.xunxiang.xunxiangwikibase.common.exception.BusinessException;
 import com.xunxiang.xunxiangwikibase.common.exception.BusinessExceptionCode;
-import com.xunxiang.xunxiangwikibase.domain.RoleUser;
-import com.xunxiang.xunxiangwikibase.domain.User;
-import com.xunxiang.xunxiangwikibase.domain.UserExample;
+import com.xunxiang.xunxiangwikibase.domain.*;
 import com.xunxiang.xunxiangwikibase.mapper.RoleUserMapper;
 import com.xunxiang.xunxiangwikibase.mapper.UserMapper;
 import com.xunxiang.xunxiangwikibase.req.UserLoginReq;
@@ -29,8 +27,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +42,12 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private RoleUserMapper roleUserMapper;
+
+    @Resource
+    private RoleServiceImpl roleService;
+
+    @Resource
+    private PermissionServiceImpl permissionService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -84,6 +90,14 @@ public class UserServiceImpl implements UserService {
         User user = findByUsername(username);
         UserLoginResp loginResp = CopyUtil.copy(user,UserLoginResp.class);
         loginResp.setToken(subject.getSession().getId().toString());
+
+        List<String> permissions = new ArrayList<>();
+        List<Role> roleList = roleService.findByUsername(username);
+        for(Role r:roleList){
+            List<Permission> permissionList = permissionService.findByRoleId(r.getId());
+            permissions.addAll(permissionList.stream().map(Permission::getPermission).collect(Collectors.toList()));
+        }
+        loginResp.setPermissions(permissions);
 //        redisTemplate.opsForValue().set(token.toString(),loginResp,3600, TimeUnit.SECONDS);
 //        } catch (IncorrectCredentialsException e) {
 //            jsonObject.put("msg", "密码错误");

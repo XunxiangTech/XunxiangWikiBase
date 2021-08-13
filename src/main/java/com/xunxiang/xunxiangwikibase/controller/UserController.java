@@ -14,6 +14,7 @@ import com.xunxiang.xunxiangwikibase.service.impl.PermissionServiceImpl;
 import com.xunxiang.xunxiangwikibase.service.impl.RoleServiceImpl;
 import com.xunxiang.xunxiangwikibase.service.impl.UserServiceImpl;
 import com.xunxiang.xunxiangwikibase.util.SnowFlake;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,8 @@ public class UserController {
     @Resource
     SnowFlake snowFlake;
 
-    @GetMapping("/list-all")
+    @RequiresPermissions("userInfo:manage")
+    @GetMapping("admin/list-all")
     public CommonResp listAllUser(){
         CommonResp resp = new CommonResp();
         List<User> userList = userService.listAllUser();

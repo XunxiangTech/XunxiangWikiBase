@@ -49,7 +49,7 @@ public class ShiroConfig{
         //配置退出过滤器，修改了默认logout过滤器，清除相应的缓存信息
         filterChainDefinitionMap.put("/logout", "logout");
         // 配置需要拦截的链接
-        filterChainDefinitionMap.put("/auth/**", "ShiroAuthFilter");
+        filterChainDefinitionMap.put("/admin/**", "ShiroAuthFilter");
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         // 自定义的登录过滤器
         filterMap.put("ShiroAuthFilter", new ShiroAuthFilter());

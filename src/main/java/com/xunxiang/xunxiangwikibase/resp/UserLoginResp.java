@@ -1,6 +1,7 @@
 package com.xunxiang.xunxiangwikibase.resp;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserLoginResp implements Serializable {
     private Long id;
@@ -11,15 +12,9 @@ public class UserLoginResp implements Serializable {
 
     private String email;
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     private String token;
+
+    private List<String> permissions;
 
     public Long getId() {
         return id;
@@ -53,6 +48,21 @@ public class UserLoginResp implements Serializable {
         this.email = email;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
+    }
 
     @Override
     public String toString() {
@@ -62,6 +72,7 @@ public class UserLoginResp implements Serializable {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", token='" + token + '\'' +
+                ", permissions=" + permissions +
                 '}';
     }
 }
