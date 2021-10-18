@@ -108,7 +108,7 @@ export default defineComponent({
       axios.get("/wikibook/list", {
         params: {
           page: 1,
-          size: 1,
+          size: 5,
           category2Id: categoryId2
         }
       }).then((response) => {
